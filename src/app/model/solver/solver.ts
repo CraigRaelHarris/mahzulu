@@ -1,4 +1,4 @@
-import type { StonePosition } from '../stone';
+import { pairInstanceId, type StonePosition } from '../stone';
 import type { Place } from '../types';
 import type { Group, Tile } from './solver.types';
 import { SolveInit } from './solver.init';
@@ -61,7 +61,10 @@ export class Solver {
 				right: [undefined, undefined, undefined],
 				above: [undefined, undefined, undefined, undefined, undefined],
 				below: [undefined, undefined, undefined, undefined, undefined],
-				value: stone.groupNr,
+				// the solver pairs any two tiles of the same group, but a word only pairs
+				// across languages: giving each zulu/english pair instance its own value
+				// keeps every pair the solver plays legal (see pairInstanceId)
+				value: pairInstanceId(stone),
 				// If the solver has played the tile already during the routine prune()
 				isPlayed: false
 			};
@@ -85,7 +88,8 @@ export class Solver {
 			height = Math.max(height, stone.y + 1);
 			width = Math.max(width, stone.x + 1);
 			depth = Math.max(depth, stone.z + 1);
-			groups = Math.max(groups, stone.groupNr + 1);
+			// the group table is indexed by pair instance values, so it needs twice the groups
+			groups = Math.max(groups, pairInstanceId(stone) + 1);
 		}
 		this.maxHeight = height;
 		this.maxWidth = width;

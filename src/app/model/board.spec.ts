@@ -65,15 +65,21 @@ describe('Board', () => {
 		it('should highlight free partner stones for a selected stone', () => {
 			const selected = new Stone(0, 0, 0, 1, 5);
 			const partner1 = new Stone(0, 2, 0, 1, 5);
+			partner1.lang = 'en';
 			const partner2 = new Stone(0, 4, 0, 1, 5);
+			partner2.lang = 'en';
+			const sameLanguage = new Stone(0, 8, 0, 1, 5);
 			const other = new Stone(0, 6, 0, 1, 9);
-			board.free.set([selected, partner1, partner2, other]);
+			other.lang = 'en';
+			board.free.set([selected, partner1, partner2, sameLanguage, other]);
 
 			board.highlightMatches(selected);
 
 			expect(selected.matched()).toBe(false);
 			expect(partner1.matched()).toBe(true);
 			expect(partner2.matched()).toBe(true);
+			// the same word in the same language is not a partner
+			expect(sameLanguage.matched()).toBe(false);
 			expect(other.matched()).toBe(false);
 		});
 

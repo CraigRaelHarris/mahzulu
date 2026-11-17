@@ -3,7 +3,7 @@ import { Board } from './board';
 import { Clock } from './clock';
 import { GAME_MODE_CHALLENGE, GAME_MODE_EASY, GAME_MODE_EXPERT, type GAME_MODE_ID, GAME_MODE_ID_DEFAULT, RESCUE_SHUFFLE_ATTEMPTS, STATES, isPlayableTileCount } from './consts';
 import { SOUNDS, Sound } from './sound';
-import type { Stone } from './stone';
+import { isWordPartner, type Stone } from './stone';
 import type { GameStateStore, Layout, StorageProvider } from './types';
 import { type BUILD_MODE_ID, MODE_SOLVABLE } from './builder';
 import { Music } from './music';
@@ -86,11 +86,19 @@ export class Game {
 		if (this.clock.elapsed() === 0) {
 			this.clock.run();
 		}
-		if (stone && this.board.selected && stone !== this.board.selected && stone.groupNr === this.board.selected.groupNr) {
-			this.clearMatchesTimer();
-			this.resolveMatchingStone(stone);
-			this.board.clearHints();
-			return true;
+		if (stone && this.board.selected && stone !== this.board.selected) {
+			if (isWordPartner(stone, this.board.selected)) {
+				this.clearMatchesTimer();
+				this.resolveMatchingStone(stone);
+				this.board.clearHints();
+				return true;
+			}
+			if (stone.groupNr === this.board.selected.groupNr) {
+				// same word, same language: these two can never pair up
+				this.sound.play(SOUNDS.NOPE);
+				this.wiggleStone(stone);
+				return true;
+			}
 		}
 		if (!stone.hinted()) {
 			this.board.clearHints();

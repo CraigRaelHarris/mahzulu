@@ -12,8 +12,8 @@ import { BoardTileComponent } from './board-tile.component';
 
 function makeDraw(): Draw {
 	const stone = new Stone(0, 0, 0, 0, 0);
-	stone.img = { id: 'c1' };
-	return { z: 0, x: 0, y: 0, v: 0, visible: true, url: 'c1', pos: calcDrawPos(0, 0, 0), source: stone };
+	stone.img = { id: 'w_inja_zu' };
+	return { z: 0, x: 0, y: 0, v: 0, visible: true, url: 'w_inja_zu', text: 'inja', lang: 'zu', pos: calcDrawPos(0, 0, 0), source: stone };
 }
 
 describe('BoardTileComponent', () => {
@@ -35,8 +35,6 @@ describe('BoardTileComponent', () => {
 		appService = TestBed.inject(AppService);
 		draw = makeDraw();
 		fixture.componentRef.setInput('draw', draw);
-		fixture.componentRef.setInput('imagePos', [1, 1, 69, 88]);
-		fixture.componentRef.setInput('urlPrefix', '#b_test_');
 		fixture.detectChanges();
 	});
 

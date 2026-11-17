@@ -3,9 +3,9 @@
 	<svg:rect class="mark-aura" x="-8" y="-8" width="91" height="116" rx="17" ry="17"/>
 }
 <svg:g class="tile">
-	@if (draw().url && !covered()) {
+	@if (draw().text && !covered()) {
 		<!-- the title is a hover tooltip, so a covered tile must not carry one -->
-		<svg:title>{{ draw().url | translate }}</svg:title>
+		<svg:title>{{ tileTooltip() }}</svg:title>
 	}
 	@if (app.settings.tile3d()) {
 		<svg:rect class="side" x="5" y="5" width="75" height="100" rx="10" ry="10"></svg:rect>
@@ -17,14 +17,13 @@
 	@if (covered()) {
 		<svg:use class="back" [attr.xlink:href]="backUrl()" x="0" y="0" width="75" height="100"/>
 	} @else {
-		<svg:use
-			[attr.xlink:href]="draw().url | prefix:urlPrefix()"
-			[attr.x]="imagePos()[0]"
-			[attr.y]="imagePos()[1]"
-			[attr.width]="imagePos()[2]"
-			[attr.height]="imagePos()[3]"
-			clip-path="url(#mah-image-clip)"
-		/>
+		<!-- the word is the tile face: one language on the tile, its partner makes the pair -->
+		<svg:g class="face" [attr.data-lang]="draw().lang ?? 'zu'">
+			@for (line of faceLines(); track $index) {
+				<svg:text class="word" x="37.5" [attr.y]="line.y" [attr.font-size]="line.fontSize">{{ line.text }}</svg:text>
+			}
+		</svg:g>
+		<svg:text class="lang-badge" x="37.5" y="94">{{ draw().lang === 'en' ? 'ENG' : 'ZUL' }}</svg:text>
 	}
 	<svg:use class="front" xlink:href="#front" x="0" y="0" width="75" height="100"/>
 	@if (mark()) {

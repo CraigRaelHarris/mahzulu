@@ -477,6 +477,8 @@ export class BoardComponent implements OnInit, OnChanges, AfterViewInit {
 					visible: true,
 					key: `${stone.z}:${stone.x}:${stone.y}`,
 					url: stone.img?.id,
+					text: stone.text,
+					lang: stone.lang,
 					pos: calcDrawPos(stone.z, stone.x, stone.y),
 					source: stone
 				}));

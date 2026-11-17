@@ -1,6 +1,6 @@
 import { signal } from '@angular/core';
 import { type BUILD_MODE_ID, Builder, MODE_SOLVABLE } from './builder';
-import { type Stone, safeGetStone } from './stone';
+import { type Stone, isWordPartner, safeGetStone } from './stone';
 import type { Mapping, Place, StoneMapping, StonePlace } from './types';
 import { StoneTiles, Tiles } from './tiles';
 import { BuilderBase } from './builder/base';
@@ -55,7 +55,7 @@ export class Board {
 
 	highlightMatches(stone: Stone): void {
 		for (const partner of this.free()) {
-			if (partner !== stone && partner.groupNr === stone.groupNr) {
+			if (isWordPartner(partner, stone)) {
 				partner.matched.set(true);
 			}
 		}
@@ -118,7 +118,8 @@ export class Board {
 	}
 
 	canRemove(stone: Stone): boolean {
-		return stone.group.some((groupStone: Stone) => !groupStone.picked() && !groupStone.isBlocked());
+		// only a free tile showing the same word in the other language makes a stone removable
+		return stone.group.some((groupStone: Stone) => !groupStone.picked() && !groupStone.isBlocked() && groupStone.lang !== stone.lang);
 	}
 
 	update(): void {
@@ -269,6 +270,7 @@ export class Board {
 					stones
 				};
 			})
-			.filter((group: StoneGroup) => group.stones.length > 0);
+			// only words with at least one free zulu and one free english tile can pair up
+			.filter((group: StoneGroup) => group.stones.some(stone => stone.lang === 'zu') && group.stones.some(stone => stone.lang === 'en'));
 	}
 }

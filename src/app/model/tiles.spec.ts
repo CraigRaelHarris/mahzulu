@@ -21,13 +21,13 @@ describe('Tiles', () => {
 			// Verify the extra group exists
 			expect(tiles.groups[extraGroupIndex]).toBeDefined();
 
-			// Verify the extra group has tiles with IDs from TILES_EXT
+			// Verify the extra group has tiles with IDs reused from the standard groups
 			const extraGroupTiles = tiles.groups[extraGroupIndex].tiles;
 			expect(extraGroupTiles).toHaveLength(4);
 
-			// The first extra tile should have an ID from TILES_EXT
+			// The first extra tile should have an ID from the first standard group
 			const extraTileId = extraGroupTiles[0].img.id;
-			const extraTileIdFromConst = TILES_EXT[0][0];
+			const extraTileIdFromConst = TILES[0][0];
 			expect(extraTileId).toBe(extraTileIdFromConst);
 		});
 

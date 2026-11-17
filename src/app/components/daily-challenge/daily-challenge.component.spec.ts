@@ -83,7 +83,7 @@ describe('DailyChallengeComponent', () => {
 		expect(component.timeLimitRange()).toBeUndefined();
 	});
 
-	// the purge adds time per target tile at start, so its limit spans the smallest and the largest suit
+	// the purge adds time per target tile at start, so its limit spans the smallest and the largest word category
 	it('announces a time span for the purge', async () => {
 		entry.challenge = CHALLENGE_CODES.CHALLENGE_THE_PURGE;
 		entry.layout = { ...layout(), mapping: fullMapping() };
@@ -91,8 +91,8 @@ describe('DailyChallengeComponent', () => {
 		await fixture.whenStable();
 		expect(component.info()?.timeLimitPerTile).toBe(CHALLENGE_PURGE_TIME_PER_BOARD_TILE);
 		const base = CHALLENGE_MAX_TILE_COUNT * CHALLENGE_PURGE_TIME_PER_BOARD_TILE;
-		// the 8 bonus tiles are the smallest suit group on a full board, a suit of 36 the largest
-		const span = { min: base + (8 * CHALLENGE_PURGE_TIME_PER_TARGET), max: base + (36 * CHALLENGE_PURGE_TIME_PER_TARGET) };
+		// the 16 body tiles are the smallest word category on a full board, the 52 animal tiles the largest
+		const span = { min: base + (16 * CHALLENGE_PURGE_TIME_PER_TARGET), max: base + (52 * CHALLENGE_PURGE_TIME_PER_TARGET) };
 		expect(component.timeLimitRange()).toEqual(span);
 		component.openChallengeInfo(CHALLENGE_CODES.CHALLENGE_THE_PURGE, new Event('click'));
 		expect(component.challengeDetails()?.timeLimit).toEqual(span);

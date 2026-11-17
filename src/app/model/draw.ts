@@ -1,5 +1,6 @@
 import type { Stone } from './stone';
 import type { DrawPlacement } from './draw-geometry';
+import type { TileLang } from './consts';
 
 export type { DrawPos, DrawPlacement } from './draw-geometry';
 export {
@@ -17,6 +18,9 @@ export interface Draw extends DrawPlacement {
 	visible: boolean;
 	key?: string;
 	url?: string;
+	// the word shown on the tile face and the language it is written in
+	text?: string;
+	lang?: TileLang;
 	className?: string;
 	source: Stone;
 }

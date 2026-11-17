@@ -582,6 +582,7 @@ describe('Game', () => {
 			stone1.state.set({ blocked: false, removable: true });
 
 			const stone2 = new Stone(0, 1, 0, 1, 1);
+			stone2.lang = 'en';
 			stone2.state.set({ blocked: false, removable: true });
 
 			mockBoard.selected = stone1;

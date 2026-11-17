@@ -1,5 +1,5 @@
 import type { Mapping } from '../types';
-import type { Tile, Tiles } from '../tiles';
+import type { Tile, TileGroup, Tiles } from '../tiles';
 import { Stone } from '../stone';
 import { BuilderBase } from './base';
 import { shuffledCopy } from '../array-utilities';
@@ -21,18 +21,26 @@ export class RandomBoardBuilder extends BuilderBase {
 	}
 
 	getTilesInGame(tiles: Tiles, amount: number): Array<Tile> {
-		// Draw complete pairs so every group placed on the board has an even tile count
+		// Draw complete pairs so every group placed on the board has an even tile count.
+		// The pair instances carry one zulu and one english tile of the same word.
 		const need = Math.floor(amount / 2) * 2;
 		const result: Array<Tile> = [];
 		for (const group of shuffledCopy(tiles.groups)) {
-			for (let index = 0; index + 1 < group.tiles.length && result.length < need; index += 2) {
-				result.push(group.tiles[index], group.tiles[index + 1]);
-			}
+			this.fillPairs(group, result, need);
 			if (result.length >= need) {
 				break;
 			}
 		}
 		return result;
+	}
+
+	private fillPairs(group: TileGroup, result: Array<Tile>, need: number): void {
+		for (const pair of BuilderBase.instancePairs(group.tiles)) {
+			if (result.length >= need) {
+				return;
+			}
+			result.push(pair[0], pair[1]);
+		}
 	}
 
 	private buildOnce(mapping: Mapping, tiles: Tiles): Array<Stone> {
@@ -52,14 +60,18 @@ export class RandomBoardBuilder extends BuilderBase {
 	}
 
 	private static hasFreePair(stones: Array<Stone>): boolean {
-		const byGroup: { [g: number]: number } = {};
+		const freeByLang: { [g: number]: { zu: number; en: number } } = {};
 		for (const stone of stones) {
 			if (stone.isBlocked()) {
 				continue;
 			}
-
-			byGroup[stone.groupNr] = (byGroup[stone.groupNr] ?? 0) + 1;
-			if (byGroup[stone.groupNr] >= 2) {
+			const counts = freeByLang[stone.groupNr] ??= { zu: 0, en: 0 };
+			if (stone.lang === 'zu') {
+				counts.zu++;
+			} else {
+				counts.en++;
+			}
+			if (counts.zu > 0 && counts.en > 0) {
 				return true;
 			}
 		}

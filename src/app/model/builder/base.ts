@@ -1,5 +1,5 @@
 import type { Mapping } from '../types';
-import type { Tiles } from '../tiles';
+import type { Tile, Tiles } from '../tiles';
 import { type Stone, safeGetStone } from '../stone';
 import { randomExtract, shuffledCopy } from '../array-utilities';
 
@@ -20,6 +20,17 @@ export abstract class BuilderBase implements BuilderType {
 
 	static randomList<T>(array: Array<T>): Array<T> {
 		return shuffledCopy(array);
+	}
+
+	// the v-adjacent tiles of a group form its pair instances - always one zulu and one
+	// english tile of the same word, no matter in which order the group carries its tiles
+	static instancePairs(tiles: Array<Tile>): Array<[Tile, Tile]> {
+		const sorted = [...tiles].sort((a, b) => a.v - b.v);
+		const pairs: Array<[Tile, Tile]> = [];
+		for (let index = 0; index + 1 < sorted.length; index += 2) {
+			pairs.push([sorted[index], sorted[index + 1]]);
+		}
+		return pairs;
 	}
 
 	static collectNodes(stones: Array<Stone>, stone: Stone): {
@@ -63,6 +74,8 @@ export abstract class BuilderBase implements BuilderType {
 		for (const stone of stones) {
 			const tile = tiles.list[stone.v];
 			stone.img = tile?.img ?? {};
+			stone.text = tile?.text ?? '';
+			stone.lang = tile?.lang ?? 'zu';
 			groups[stone.groupNr] ||= [];
 			groups[stone.groupNr].push(stone);
 			stone.nodes = this.collectNodes(stones, stone);

@@ -1,5 +1,6 @@
 import { signal } from '@angular/core';
 import type { StoneMark } from './challenge/consts';
+import type { TileLang } from './consts';
 
 export interface StonePosition {
 	x: number;
@@ -41,6 +42,9 @@ export class Stone implements StonePosition {
 	wiggleTimer?: ReturnType<typeof setTimeout>;
 	group: Array<Stone> = [];
 	img: StoneImg = {};
+	// the word shown on the face and the language it is written in
+	text: string = '';
+	lang: TileLang = 'zu';
 	nodes: StoneNodes = { top: [], left: [], right: [], bottom: [] };
 
 	private static hasStone(list: Array<Stone>): boolean {
@@ -72,3 +76,13 @@ export const safeGetStone = (stones: Array<Stone>, z: number, x: number, y: numb
 	}
 	return undefined;
 };
+
+// two stones pair up when they show the same word in opposite languages
+export const isWordPartner = (a: Stone, b: Stone): boolean =>
+	a !== b && a.groupNr === b.groupNr && a.lang !== b.lang;
+
+// id of the zulu/english pair instance a stone belongs to: within a word group the tiles
+// are ordered [zulu A, english A, zulu B, english B] with consecutive v values starting
+// at 1, so v offsets 0 and 1 form instance 0 and offsets 2 and 3 form instance 1
+export const pairInstanceId = (stone: { groupNr: number; v: number }): number =>
+	stone.groupNr * 2 + ((((Math.max(stone.v, 1) - 1) % 4) < 2) ? 0 : 1);

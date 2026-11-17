@@ -1,16 +1,21 @@
 import type { Stone } from '../../stone';
+import { WORD_CATEGORIES, WORD_FACES } from '../../consts';
 import { CHALLENGE_CODES, type CHALLENGE_ID, CHALLENGE_PURGE_TIME_PER_TARGET, SUIT_GROUPS } from '../consts';
 import type { ChallengeContext, ChallengeRules } from '../types';
 
-function matchesGroup(stone: Stone, prefixes: Array<string>): boolean {
+function matchesGroup(stone: Stone, categories: Array<string>): boolean {
 	const id = stone.img.id;
-	return id !== undefined && prefixes.some(prefix => id.startsWith(prefix));
+	if (id === undefined) {
+		return false;
+	}
+	const wordId = WORD_FACES[id]?.wordId;
+	return wordId !== undefined && categories.includes(WORD_CATEGORIES[wordId] ?? '');
 }
 
 export function pickSuitGroup(context: ChallengeContext): { name: string; stones: Array<Stone> } | undefined {
 	const open = context.board.stones().filter(stone => !stone.picked());
 	const usable = SUIT_GROUPS
-		.map(group => ({ name: group.name, stones: open.filter(stone => matchesGroup(stone, group.prefixes)) }))
+		.map(group => ({ name: group.name, stones: open.filter(stone => matchesGroup(stone, [group.category])) }))
 		.filter(group => group.stones.length > 0);
 	if (usable.length === 0) {
 		return undefined;

@@ -520,8 +520,9 @@ describe('Challenge', () => {
 });
 
 describe('suitTargetBounds', () => {
-	it('spans the smallest and the largest suit group of a full board', () => {
-		expect(suitTargetBounds(CHALLENGE_MAX_TILE_COUNT)).toEqual({ min: 8, max: 36 });
+	it('spans the smallest and the largest word category of a full board', () => {
+		// the body category is the smallest (4 words), the animals the largest (13 words)
+		expect(suitTargetBounds(CHALLENGE_MAX_TILE_COUNT)).toEqual({ min: 16, max: 52 });
 	});
 
 	it('never claims more targets than a board has places', () => {
@@ -543,7 +544,7 @@ describe('minimumTileCount', () => {
 	});
 
 	it('caps the daily at a full mahjong set, so no board needs jokers', () => {
-		expect(CHALLENGE_MAX_TILE_COUNT).toBe(TILES.length * 4);
+		expect(CHALLENGE_MAX_TILE_COUNT).toBeLessThanOrEqual(TILES.length * 4);
 		expect(CHALLENGE_MAX_TILE_COUNT).toBeGreaterThan(CHALLENGE_MIN_TILE_COUNT);
 		for (const id of CHALLENGE_IDS) {
 			expect(minimumTileCount(challengeInfo(id))).toBeLessThanOrEqual(CHALLENGE_MAX_TILE_COUNT);

@@ -1,9 +1,11 @@
-import { TILES, TILES_EXT } from './consts';
+import { TILES, TILES_EXT, WORD_FACES, type TileLang } from './consts';
 
 export interface Tile {
 	v: number;
 	groupNr: number;
 	img: { id: string };
+	text: string;
+	lang: TileLang;
 }
 
 export interface TileGroup {
@@ -38,7 +40,8 @@ export class Tiles {
 			this.groups.push(g);
 			for (const img of group) {
 				v++;
-				const tile: Tile = { groupNr, v, img };
+				const face = WORD_FACES[img.id];
+				const tile: Tile = { groupNr, v, img, text: face?.text ?? '', lang: face?.lang ?? 'zu' };
 				g.tiles.push(tile);
 				this.list[v] = tile;
 			}
@@ -47,11 +50,18 @@ export class Tiles {
 }
 
 export class StoneTiles extends Tiles {
-	constructor(stones: Array<{ v: number; groupNr: number; img: { id?: string } }>) {
+	constructor(stones: Array<{ v: number; groupNr: number; img: { id?: string }; text?: string; lang?: TileLang }>) {
 		super(0);
-		const groupMap: { [groupNr: number]: { v: number; tiles: Array<{ v: number; groupNr: number; img: { id: string } }> } } = {};
+		const groupMap: { [groupNr: number]: { v: number; tiles: Array<Tile> } } = {};
 		for (const stone of stones) {
-			const tile = { v: stone.v, groupNr: stone.groupNr, img: { id: stone.img.id ?? '' } };
+			const face = WORD_FACES[stone.img.id ?? ''];
+			const tile: Tile = {
+				v: stone.v,
+				groupNr: stone.groupNr,
+				img: { id: stone.img.id ?? '' },
+				text: stone.text ?? face?.text ?? '',
+				lang: stone.lang ?? face?.lang ?? 'zu'
+			};
 			groupMap[stone.groupNr] ||= { v: stone.groupNr, tiles: [] };
 			groupMap[stone.groupNr].tiles.push(tile);
 			this.list[stone.v] = tile;

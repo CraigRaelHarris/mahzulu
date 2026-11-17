@@ -1,4 +1,4 @@
-import { TILES } from '../consts';
+import { TILES, WORD_CATEGORIES, WORD_FACES } from '../consts';
 import { SCORE_BASE_POINTS } from './score';
 
 export const CHALLENGE_CODES = {
@@ -190,12 +190,15 @@ export function minimumTileCount(info: ChallengeInfo): number {
 	return Math.max(CHALLENGE_MIN_TILE_COUNT, 2 * Math.ceil(info.scoreTarget / SCORE_BASE_POINTS));
 }
 
-export const SUIT_GROUPS: Array<{ code: number; name: string; prefixes: Array<string> }> = [
-	{ code: 1, name: 'TILES_SUIT_CIRCLES', prefixes: ['t_do'] },
-	{ code: 2, name: 'TILES_SUIT_BAMBOO', prefixes: ['t_ba'] },
-	{ code: 3, name: 'TILES_SUIT_CHARACTERS', prefixes: ['t_ch'] },
-	{ code: 4, name: 'TILES_HONORS', prefixes: ['t_wi_', 't_dr_'] },
-	{ code: 5, name: 'TILES_BONUS', prefixes: ['t_se_', 't_fl_'] }
+// the purge marks a whole word category instead of a mahjong suit - the codes are persisted in challenge stores
+export const SUIT_GROUPS: Array<{ code: number; name: string; category: string }> = [
+	{ code: 1, name: 'WORDS_CATEGORY_FAMILY', category: 'WORDS_CATEGORY_FAMILY' },
+	{ code: 2, name: 'WORDS_CATEGORY_HOUSE', category: 'WORDS_CATEGORY_HOUSE' },
+	{ code: 3, name: 'WORDS_CATEGORY_ANIMALS', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ code: 4, name: 'WORDS_CATEGORY_NATURE', category: 'WORDS_CATEGORY_NATURE' },
+	{ code: 5, name: 'WORDS_CATEGORY_FOOD', category: 'WORDS_CATEGORY_FOOD' },
+	{ code: 6, name: 'WORDS_CATEGORY_BODY', category: 'WORDS_CATEGORY_BODY' },
+	{ code: 7, name: 'WORDS_CATEGORY_TIME', category: 'WORDS_CATEGORY_TIME' }
 ];
 
 export function suitGroupCode(name: string): number | undefined {
@@ -206,11 +209,14 @@ export function suitGroupName(code: number): string | undefined {
 	return SUIT_GROUPS.find(group => group.code === code)?.name;
 }
 
-// every group is on a full board, a smaller one cannot hold more of a suit than it has places
+// every group is on a full board, a smaller one cannot hold more of a category than it has places
 export function suitTargetBounds(tileCount: number): { min: number; max: number } {
 	const all = TILES.flat();
 	const counts = SUIT_GROUPS
-		.map(group => all.filter(id => group.prefixes.some(prefix => id.startsWith(prefix))).length)
+		.map(group => all.filter(id => {
+			const wordId = WORD_FACES[id]?.wordId;
+			return wordId !== undefined && WORD_CATEGORIES[wordId] === group.category;
+		}).length)
 		.filter(count => count > 0)
 		.map(count => Math.min(count, tileCount));
 	return { min: Math.min(...counts), max: Math.max(...counts) };

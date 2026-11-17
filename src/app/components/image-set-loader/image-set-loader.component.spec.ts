@@ -4,7 +4,7 @@ import { SvgdefService } from '../../service/svgdef.service';
 import { ImageSetLoaderComponent } from './image-set-loader.component';
 import type { ElementRef } from '@angular/core';
 import { log } from '../../model/log';
-import { TILES, TILES_EXT } from '../../model/consts';
+import { TILES, TILES_EXT, WORDS } from '../../model/consts';
 import { type Mock, describe, beforeEach, afterEach, it, expect, vi } from 'vitest';
 
 interface HackImageSetLoaderComponent {
@@ -249,18 +249,18 @@ describe('ImageSetLoaderComponent', () => {
 
 			const ids = placeholderIds(setImageSetSpy.mock.calls[0][0]);
 			expect(ids.length).toBe(new Set(ids).size);
-			expect(ids.filter(id => id.startsWith('t_'))).toEqual([...new Set([...TILES, ...TILES_EXT].flat())]);
+			expect(ids.filter(id => id.startsWith('w_'))).toEqual([...new Set([...TILES, ...TILES_EXT].flat())]);
 		});
 
-		it('should cover the extended tile ids', () => {
+		it('should cover both languages of every word', () => {
 			const setImageSetSpy = vi.spyOn(component as unknown as HackImageSetLoaderComponent, 'setImageSet');
 
 			(component as unknown as HackImageSetLoaderComponent).setLoading();
 
 			const ids = placeholderIds(setImageSetSpy.mock.calls[0][0]);
-			expect(ids).toContain('t_g1');
-			expect(ids).toContain('t_e9');
-			expect(ids.filter(id => id.startsWith('t_'))).toHaveLength(69);
+			expect(ids).toContain('w_sawubona_zu');
+			expect(ids).toContain('w_ukulala_en');
+			expect(ids.filter(id => id.startsWith('w_'))).toHaveLength(WORDS.length * 2);
 		});
 	});
 
@@ -282,7 +282,7 @@ describe('ImageSetLoaderComponent', () => {
 
 			const ids = placeholderIds(setImageSetSpy.mock.calls[0][0]);
 			expect(ids.length).toBe(new Set(ids).size);
-			expect(ids.filter(id => id.startsWith('t_'))).toEqual([...new Set([...TILES, ...TILES_EXT].flat())]);
+			expect(ids.filter(id => id.startsWith('w_'))).toEqual([...new Set([...TILES, ...TILES_EXT].flat())]);
 		});
 	});
 

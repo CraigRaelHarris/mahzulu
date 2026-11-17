@@ -104,10 +104,13 @@ export abstract class SolvableBoardBuilderBase extends BuilderBase {
 		}
 
 		for (const group of groupList) {
-			const g: Array<Tile> = BuilderBase.randomList(group.tiles);
-			for (let index = 0; index + 1 < g.length; index += 2) {
+			// only a zulu and an english tile of the same word form a pair: within a group
+			// the v order is [zulu A, english A, zulu B, english B], so the pair instances
+			// pair up v-adjacent tiles
+			const instancePairs = BuilderBase.randomList(BuilderBase.instancePairs(group.tiles));
+			for (const pair of instancePairs) {
 				if (allPairs.length < maxPairs) {
-					allPairs.push([g[index], g[index + 1]]);
+					allPairs.push(pair);
 				}
 			}
 			if (allPairs.length >= maxPairs) {

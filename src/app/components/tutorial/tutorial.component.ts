@@ -2,7 +2,7 @@ import { Component, computed, inject, type OnDestroy, output, signal } from '@an
 import { TranslatePipe } from '@ngx-translate/core';
 import type { Board } from '../../model/board';
 import { SOUNDS, type Sound } from '../../model/sound';
-import type { Stone } from '../../model/stone';
+import { isWordPartner, type Stone } from '../../model/stone';
 import { createTutorialBoard, TUTORIAL_STEPS, type TutorialStep } from '../../model/tutorial';
 import { AppService } from '../../service/app.service';
 import { BoardComponent } from '../board/board.component';
@@ -53,12 +53,17 @@ export class TutorialComponent implements OnDestroy {
 			return;
 		}
 		if (board.selected && stone !== board.selected) {
-			if (stone.groupNr === board.selected.groupNr) {
+			if (isWordPartner(stone, board.selected)) {
 				board.pick(board.selected, stone);
 				this.sound.play(SOUNDS.MATCH);
 				if (board.count() === 0) {
 					this.onStepComplete();
 				}
+			} else if (stone.groupNr === board.selected.groupNr) {
+				// same word, same language: these two can never pair up
+				this.sound.play(SOUNDS.NOPE);
+				this.wiggleStone(stone);
+				this.showFeedback('TUTORIAL_FEEDBACK_SAME_LANGUAGE');
 			} else {
 				board.setStoneSelected(stone);
 				this.sound.play(SOUNDS.SELECT);

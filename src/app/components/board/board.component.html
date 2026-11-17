@@ -65,6 +65,44 @@
 			transition: transform 120ms ease-in-out;
 		}
 
+		g.tile text.word {
+			font-family: 'Kulim Park', 'Segoe UI', system-ui, sans-serif;
+			font-weight: 600;
+			text-anchor: middle;
+			fill: #33302a;
+			pointer-events: none;
+		}
+
+		g.tile g.face[data-lang='zu'] text.word {
+			fill: #0b5394;
+		}
+
+		g.tile g.face[data-lang='en'] text.word {
+			fill: #92350a;
+		}
+
+		g.stage.dark g.tile g.face[data-lang='zu'] text.word {
+			fill: #7ec8f0;
+		}
+
+		g.stage.dark g.tile g.face[data-lang='en'] text.word {
+			fill: #f4a478;
+		}
+
+		g.tile text.lang-badge {
+			font-family: 'Kulim Park', 'Segoe UI', system-ui, sans-serif;
+			font-size: 6.5px;
+			font-weight: 700;
+			letter-spacing: 1.5px;
+			text-anchor: middle;
+			fill: #a09a8a;
+			pointer-events: none;
+		}
+
+		g.stage.dark g.tile text.lang-badge {
+			fill: #6e675c;
+		}
+
 		g.draw:focus {
 			outline: none;
 		}
@@ -501,8 +539,6 @@
 						app-board-tile
 						class="draw"
 						[draw]="draw"
-						[imagePos]="imagePos"
-						[urlPrefix]="urlPrefix"
 						[blackout]="blackout()"
 						[concealed]="concealed()"
 						[tabbable]="isTabStop(draw)"

@@ -114,52 +114,111 @@ export const ThemeDefault = 'ltgreen';
 export const LangAuto = 'auto';
 export const LangDefault = 'auto';
 
-export const TILES: Array<[string, string, string, string]> = [
-	['t_do1', 't_do1', 't_do1', 't_do1'],
-	['t_do2', 't_do2', 't_do2', 't_do2'],
-	['t_do3', 't_do3', 't_do3', 't_do3'],
-	['t_do4', 't_do4', 't_do4', 't_do4'],
-	['t_do5', 't_do5', 't_do5', 't_do5'],
-	['t_do6', 't_do6', 't_do6', 't_do6'],
-	['t_do7', 't_do7', 't_do7', 't_do7'],
-	['t_do8', 't_do8', 't_do8', 't_do8'],
-	['t_do9', 't_do9', 't_do9', 't_do9'],
-	['t_ch1', 't_ch1', 't_ch1', 't_ch1'],
-	['t_ch2', 't_ch2', 't_ch2', 't_ch2'],
-	['t_ch3', 't_ch3', 't_ch3', 't_ch3'],
-	['t_ch4', 't_ch4', 't_ch4', 't_ch4'],
-	['t_ch5', 't_ch5', 't_ch5', 't_ch5'],
-	['t_ch6', 't_ch6', 't_ch6', 't_ch6'],
-	['t_ch7', 't_ch7', 't_ch7', 't_ch7'],
-	['t_ch8', 't_ch8', 't_ch8', 't_ch8'],
-	['t_ch9', 't_ch9', 't_ch9', 't_ch9'],
-	['t_ba1', 't_ba1', 't_ba1', 't_ba1'],
-	['t_ba2', 't_ba2', 't_ba2', 't_ba2'],
-	['t_ba3', 't_ba3', 't_ba3', 't_ba3'],
-	['t_ba4', 't_ba4', 't_ba4', 't_ba4'],
-	['t_ba5', 't_ba5', 't_ba5', 't_ba5'],
-	['t_ba6', 't_ba6', 't_ba6', 't_ba6'],
-	['t_ba7', 't_ba7', 't_ba7', 't_ba7'],
-	['t_ba8', 't_ba8', 't_ba8', 't_ba8'],
-	['t_ba9', 't_ba9', 't_ba9', 't_ba9'],
-	['t_se_spring', 't_se_summer', 't_se_fall', 't_se_winter'],
-	['t_wi_north', 't_wi_north', 't_wi_north', 't_wi_north'],
-	['t_wi_south', 't_wi_south', 't_wi_south', 't_wi_south'],
-	['t_wi_east', 't_wi_east', 't_wi_east', 't_wi_east'],
-	['t_wi_west', 't_wi_west', 't_wi_west', 't_wi_west'],
-	['t_fl_bamboo', 't_fl_chrysanthemum', 't_fl_orchid', 't_fl_plum'],
-	['t_dr_green', 't_dr_green', 't_dr_green', 't_dr_green'],
-	['t_dr_white', 't_dr_white', 't_dr_white', 't_dr_white'],
-	['t_dr_red', 't_dr_red', 't_dr_red', 't_dr_red']
+// the language a tile face is written in
+export type TileLang = 'zu' | 'en';
+
+export interface WordPair {
+	id: string;
+	zulu: string;
+	english: string;
+	category: string;
+}
+
+// zulu/english word pairs shown on the tiles - a tile showing the zulu word pairs with
+// a tile showing the english word of the same entry
+export const WORDS: Array<WordPair> = [
+	{ id: 'sawubona', zulu: 'sawubona', english: 'hello', category: 'WORDS_CATEGORY_GREETINGS' },
+	{ id: 'ubaba', zulu: 'ubaba', english: 'father', category: 'WORDS_CATEGORY_FAMILY' },
+	{ id: 'umama', zulu: 'umama', english: 'mother', category: 'WORDS_CATEGORY_FAMILY' },
+	{ id: 'umntwana', zulu: 'umntwana', english: 'child', category: 'WORDS_CATEGORY_FAMILY' },
+	{ id: 'indoda', zulu: 'indoda', english: 'man', category: 'WORDS_CATEGORY_FAMILY' },
+	{ id: 'umfazi', zulu: 'umfazi', english: 'woman', category: 'WORDS_CATEGORY_FAMILY' },
+	{ id: 'umfana', zulu: 'umfana', english: 'boy', category: 'WORDS_CATEGORY_FAMILY' },
+	{ id: 'intombazane', zulu: 'intombazane', english: 'girl', category: 'WORDS_CATEGORY_FAMILY' },
+	{ id: 'umngani', zulu: 'umngani', english: 'friend', category: 'WORDS_CATEGORY_FAMILY' },
+	{ id: 'indlu', zulu: 'indlu', english: 'house', category: 'WORDS_CATEGORY_HOUSE' },
+	{ id: 'umnyango', zulu: 'umnyango', english: 'door', category: 'WORDS_CATEGORY_HOUSE' },
+	{ id: 'itafula', zulu: 'itafula', english: 'table', category: 'WORDS_CATEGORY_HOUSE' },
+	{ id: 'isitulo', zulu: 'isitulo', english: 'chair', category: 'WORDS_CATEGORY_HOUSE' },
+	{ id: 'incwadi', zulu: 'incwadi', english: 'book', category: 'WORDS_CATEGORY_HOUSE' },
+	{ id: 'inja', zulu: 'inja', english: 'dog', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'ikati', zulu: 'ikati', english: 'cat', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'inkomo', zulu: 'inkomo', english: 'cow', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'ihhashi', zulu: 'ihhashi', english: 'horse', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'inkukhu', zulu: 'inkukhu', english: 'chicken', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'inhlanzi', zulu: 'inhlanzi', english: 'fish', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'indlovu', zulu: 'indlovu', english: 'elephant', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'ibhubesi', zulu: 'ibhubesi', english: 'lion', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'ingwe', zulu: 'ingwe', english: 'leopard', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'imvubu', zulu: 'imvubu', english: 'hippo', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'ingwenya', zulu: 'ingwenya', english: 'crocodile', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'inyoni', zulu: 'inyoni', english: 'bird', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'umvundla', zulu: 'umvundla', english: 'rabbit', category: 'WORDS_CATEGORY_ANIMALS' },
+	{ id: 'ilanga', zulu: 'ilanga', english: 'sun', category: 'WORDS_CATEGORY_NATURE' },
+	{ id: 'inyanga', zulu: 'inyanga', english: 'moon', category: 'WORDS_CATEGORY_NATURE' },
+	{ id: 'inkanyezi', zulu: 'inkanyezi', english: 'star', category: 'WORDS_CATEGORY_NATURE' },
+	{ id: 'amanzi', zulu: 'amanzi', english: 'water', category: 'WORDS_CATEGORY_NATURE' },
+	{ id: 'umlilo', zulu: 'umlilo', english: 'fire', category: 'WORDS_CATEGORY_NATURE' },
+	{ id: 'imvula', zulu: 'imvula', english: 'rain', category: 'WORDS_CATEGORY_NATURE' },
+	{ id: 'ifu', zulu: 'ifu', english: 'cloud', category: 'WORDS_CATEGORY_NATURE' },
+	{ id: 'umoya', zulu: 'umoya', english: 'wind', category: 'WORDS_CATEGORY_NATURE' },
+	{ id: 'intaba', zulu: 'intaba', english: 'mountain', category: 'WORDS_CATEGORY_NATURE' },
+	{ id: 'ulwandle', zulu: 'ulwandle', english: 'sea', category: 'WORDS_CATEGORY_NATURE' },
+	{ id: 'umuthi', zulu: 'umuthi', english: 'tree', category: 'WORDS_CATEGORY_NATURE' },
+	{ id: 'ihlabathi', zulu: 'ihlabathi', english: 'sand', category: 'WORDS_CATEGORY_NATURE' },
+	{ id: 'ukudla', zulu: 'ukudla', english: 'food', category: 'WORDS_CATEGORY_FOOD' },
+	{ id: 'inyama', zulu: 'inyama', english: 'meat', category: 'WORDS_CATEGORY_FOOD' },
+	{ id: 'isonka', zulu: 'isonka', english: 'bread', category: 'WORDS_CATEGORY_FOOD' },
+	{ id: 'ubisi', zulu: 'ubisi', english: 'milk', category: 'WORDS_CATEGORY_FOOD' },
+	{ id: 'amaqanda', zulu: 'amaqanda', english: 'eggs', category: 'WORDS_CATEGORY_FOOD' },
+	{ id: 'uju', zulu: 'uju', english: 'honey', category: 'WORDS_CATEGORY_FOOD' },
+	{ id: 'ushukela', zulu: 'ushukela', english: 'sugar', category: 'WORDS_CATEGORY_FOOD' },
+	{ id: 'ummbila', zulu: 'ummbila', english: 'maize', category: 'WORDS_CATEGORY_FOOD' },
+	{ id: 'ithanga', zulu: 'ithanga', english: 'pumpkin', category: 'WORDS_CATEGORY_FOOD' },
+	{ id: 'ubhatata', zulu: 'ubhatata', english: 'sweet potato', category: 'WORDS_CATEGORY_FOOD' },
+	{ id: 'ikhanda', zulu: 'ikhanda', english: 'head', category: 'WORDS_CATEGORY_BODY' },
+	{ id: 'inhliziyo', zulu: 'inhliziyo', english: 'heart', category: 'WORDS_CATEGORY_BODY' },
+	{ id: 'izandla', zulu: 'izandla', english: 'hands', category: 'WORDS_CATEGORY_BODY' },
+	{ id: 'izinyo', zulu: 'izinyo', english: 'tooth', category: 'WORDS_CATEGORY_BODY' },
+	{ id: 'usuku', zulu: 'usuku', english: 'day', category: 'WORDS_CATEGORY_TIME' },
+	{ id: 'ubusuku', zulu: 'ubusuku', english: 'night', category: 'WORDS_CATEGORY_TIME' },
+	{ id: 'isikhathi', zulu: 'isikhathi', english: 'time', category: 'WORDS_CATEGORY_TIME' },
+	{ id: 'unyaka', zulu: 'unyaka', english: 'year', category: 'WORDS_CATEGORY_TIME' },
+	{ id: 'iviki', zulu: 'iviki', english: 'week', category: 'WORDS_CATEGORY_TIME' },
+	{ id: 'namhlanje', zulu: 'namhlanje', english: 'today', category: 'WORDS_CATEGORY_TIME' },
+	{ id: 'kusasa', zulu: 'kusasa', english: 'tomorrow', category: 'WORDS_CATEGORY_TIME' },
+	{ id: 'izolo', zulu: 'izolo', english: 'yesterday', category: 'WORDS_CATEGORY_TIME' },
+	{ id: 'ukufunda', zulu: 'ukufunda', english: 'to learn', category: 'WORDS_CATEGORY_VERBS' },
+	{ id: 'ukulala', zulu: 'ukulala', english: 'to sleep', category: 'WORDS_CATEGORY_VERBS' }
 ];
 
+export interface WordFace {
+	wordId: string;
+	lang: TileLang;
+	text: string;
+}
+
+// face id (e.g. w_inja_zu) -> the word and language shown on that face
+export const WORD_FACES: Record<string, WordFace> = Object.fromEntries(
+	WORDS.flatMap(word => (['zu', 'en'] as Array<TileLang>).map(lang => [
+		`w_${word.id}_${lang}`,
+		{ wordId: word.id, lang, text: lang === 'zu' ? word.zulu : word.english }
+	]))
+);
+
+// word id -> the category the word belongs to (the purge challenge marks a whole category)
+export const WORD_CATEGORIES: Record<string, string> = Object.fromEntries(
+	WORDS.map(word => [word.id, word.category])
+);
+
+// one matching group per word: [zulu A, english A, zulu B, english B]
+// v offsets 0 and 1 form pair instance A, offsets 2 and 3 form pair instance B -
+// the builders pair v-adjacent tiles and the solver relies on this order (see pairInstanceId)
+export const TILES: Array<[string, string, string, string]> = WORDS.map(word => [
+	`w_${word.id}_zu`, `w_${word.id}_en`, `w_${word.id}_zu`, `w_${word.id}_en`
+]);
+
 export const TILES_EXT: Array<[string, string, string, string]> = [];
-for (let index = 1; index < 19; index++) {
-	TILES_EXT.push([`t_g${index}`, `t_g${index}`, `t_g${index}`, `t_g${index}`]);
-}
-for (let index = 1; index < 10; index++) {
-	TILES_EXT.push([`t_e${index}`, `t_e${index}`, `t_e${index}`, `t_e${index}`]);
-}
 
 export const MAX_LAYOUT_TILES = (TILES.length + TILES_EXT.length) * 4;
 export const MIN_LAYOUT_TILES = 2;
