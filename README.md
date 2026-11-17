@@ -118,6 +118,16 @@ The default game name is "Mah Jong". To change it:
 1. Copy `custom-build-config.json.dist` to `custom-build-config.json`
 2. Edit the name in `custom-build-config.json` to your desired app name
 
+### The word list
+
+The vocabulary lives in `src/app/model/consts.ts` in the `WORDS` array. Each entry pairs a Zulu word with its English translation and assigns a category:
+
+```ts
+{ id: 'inja', zulu: 'inja', english: 'dog', category: 'WORDS_CATEGORY_ANIMALS' }
+```
+
+Every word appears on the board as two Zulu and two English tiles. Adding or removing entries changes the pool of words the boards are built from; the largest layouts use up to 63 words. The category names are translation keys — add matching `WORDS_CATEGORY_*` entries to the bundles in `src/assets/i18n/` when you introduce a new category.
+
 ### Quick Start
 
 ```bash
